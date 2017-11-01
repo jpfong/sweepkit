@@ -3,6 +3,13 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+
+const instance = axios.create({
+  baseURL: process.env.BASE_URL
+})
+
+Vue.prototype.axios = instance
 
 Vue.config.productionTip = false
 
