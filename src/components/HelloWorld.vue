@@ -1,7 +1,10 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
    <div>{{ sweepstakes }} ({{ displaySweepstakesCount }})</div>
+      <form v-on:submit="submitSweepstake()">
+          <input type="text" v-model="name">
+          <input type="submit" value="Submit">
+      </form>
   </div>
 </template>
 
@@ -10,14 +13,22 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      sweepstakes: []
+      sweepstakes: [],
+      name: null
     }
   },
   mounted () {
     this.axios.get('/sweepstakes').then((response) => {
       this.sweepstakes = response.data.sweepstakes
     })
+  },
+  methods: {
+    submitSweepstake () {
+      this.axios.post('/sweepstakes', { name: this.name }).then((response) => {
+        this.sweepstakes.push(response.data.sweepstake)
+        this.name = null
+      })
+    }
   },
   computed: {
     displaySweepstakesCount () {
